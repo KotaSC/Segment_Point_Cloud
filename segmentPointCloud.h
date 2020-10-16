@@ -1,5 +1,5 @@
-#ifndef _writeFeature_H__
-#define _writeFeature_H__
+#ifndef _segementPoint_H__
+#define _segementPoint_H__
 
 #include <kvs/PolygonObject>
 #include <vector>
@@ -15,9 +15,7 @@ enum WritingDataType {
 const float NORMAL[3] = { 0.0, 0.0, 0.0 };
 const int COLOR[3]    = { 0, 255, 255 };
 
-void writeFeatureColor( kvs::PolygonObject *ply,
-                        std::vector<float> &ft,
-                        double th,
+void segmentPointCloud( kvs::PolygonObject *ply,
                         char* filename,
                         WritingDataType type = Ascii )
 {
@@ -35,7 +33,7 @@ void writeFeatureColor( kvs::PolygonObject *ply,
   std::ofstream fout( filename );
   if( type == Ascii ) {
     fout << "#/SPBR_ASCII_Data"      << std::endl;
-    fout << "#/RepeatLevel 1"        << std::endl;
+    fout << "#/RepeatLevel 100"      << std::endl;
     fout << "#/BGColorRGBByte 0 0 0" << std::endl;
     fout << "#/ImageResolution 1024" << std::endl;
     fout << "#/Shading 0"            << std::endl;
@@ -63,21 +61,9 @@ void writeFeatureColor( kvs::PolygonObject *ply,
     }
 
     if( hasColor ) {
-
-      // Color Edge
-      if( ft[i] > th ) {
-        r = (int)255;
-        g = (int)0;
-        b = (int)0;
-      } else {
-        // r = (int)255;
-        // g = (int)255;
-        // b = (int)255;
-
-        r = (int)colors[ 3*i ];
-        g = (int)colors[ 3*i+1 ];
-        b = (int)colors[ 3*i+2 ];
-      }
+      r = (int)colors[ 3*i ];
+      g = (int)colors[ 3*i+1 ];
+      b = (int)colors[ 3*i+2 ];
     }
     if( type == Binary ) {
       fout.write( (char*)&x, sizeof(float) );
@@ -96,12 +82,10 @@ void writeFeatureColor( kvs::PolygonObject *ply,
       fout.write( (char*)&cl, sizeof(unsigned char) );
     }
     else {
-      if(ft[i] <= th) {
-        fout  << x << " " << y << " " << z << " "
-              << nx << " " << ny << " " << nz << " "
-              << r << " " << g << " " << b
-              << std::endl;
-      }
+      fout << x  << " " << y << " " << z << " "
+           << nx << " " << ny << " " << nz << " "
+           << r  << " " << g << " " << b
+           << std::endl;
     }
   }
 

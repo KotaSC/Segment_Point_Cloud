@@ -3,7 +3,7 @@
 #include <cstdlib>
 #include <vector>
 #include "importPointClouds.h"
-#include "writeFeatureColor.h"
+#include "segmentPointCloud.h"
 
 #include <kvs/PolygonObject>
 #include <kvs/PointObject>
@@ -20,7 +20,7 @@ int main( int argc, char** argv ) {
     strcpy( outSPBRfile, OUT_FILE );
 
     if ( argc != 3 ) {
-        std::cerr << "USAGE: $ ./vfp [input.xyz] [output.spbr]" << std::endl;
+        std::cerr << "USAGE: $ ./vfp [input.spbr] [output.spbr]" << std::endl;
         exit(1);
     } else {
         strcpy( outSPBRfile, argv[2] );
@@ -33,15 +33,8 @@ int main( int argc, char** argv ) {
     std::cout << "Max : " << ply->maxObjectCoord() << std::endl;
     std::cout << "Number of points: " << ply->numberOfVertices() << std::endl;
 
-    std::vector<float> ft = ply->featureData();
-
-    double th;
-
-    std::cout << "Input Feature Threshold : ";
-    std::cin >> th;
-
     WritingDataType type = Ascii;
-    writeFeatureColor( ply, ft, th, outSPBRfile, type );
+    segmentPointCloud( ply, outSPBRfile, type );
 
     kvs::PointObject* object = new kvs::PointObject( *ply );
     object->setSize( 1 );
