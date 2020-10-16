@@ -82,10 +82,12 @@ void segmentPointCloud( kvs::PolygonObject *ply,
       fout.write( (char*)&cl, sizeof(unsigned char) );
     }
     else {
-      fout << x  << " " << y << " " << z << " "
-           << nx << " " << ny << " " << nz << " "
-           << r  << " " << g << " " << b
-           << std::endl;
+      if( x >= 0.0 ) {
+        fout << x  << " " << y << " " << z << " "
+            << nx << " " << ny << " " << nz << " "
+            << r  << " " << g << " " << b
+            << std::endl;
+      }
     }
   }
 
